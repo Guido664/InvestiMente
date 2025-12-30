@@ -1,0 +1,5 @@
+{
+  "name": "InvestiMente - Calcolatore Interesse Composto",
+  "description": "Una webapp moderna per visualizzare la crescita del capitale nel tempo attraverso l'interesse composto, arricchita da analisi AI.",
+  "requestFramePermissions": []
+}
