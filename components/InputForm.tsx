@@ -10,9 +10,10 @@ interface InputFormProps {
 const InputForm: React.FC<InputFormProps> = ({ params, onChange }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    // Se il valore è vuoto, salviamo 0 nello stato, ma l'input visivamente rimarrà vuoto grazie al value check
     onChange({
       ...params,
-      [name]: parseFloat(value) || 0,
+      [name]: value === '' ? 0 : parseFloat(value),
     });
   };
 
@@ -33,7 +34,8 @@ const InputForm: React.FC<InputFormProps> = ({ params, onChange }) => {
           <input
             type="number"
             name="initialCapital"
-            value={params.initialCapital}
+            // Se è 0, mostriamo stringa vuota per permettere l'editing/cancellazione
+            value={params.initialCapital || ''}
             onChange={handleChange}
             className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all outline-none font-mono text-lg"
             placeholder="0"
@@ -49,7 +51,7 @@ const InputForm: React.FC<InputFormProps> = ({ params, onChange }) => {
           <input
             type="number"
             name="monthlyContribution"
-            value={params.monthlyContribution}
+            value={params.monthlyContribution || ''}
             onChange={handleChange}
             className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all outline-none font-mono text-lg"
             placeholder="100"
@@ -75,7 +77,7 @@ const InputForm: React.FC<InputFormProps> = ({ params, onChange }) => {
           <input
             type="number"
             name="annualInterestRate"
-            value={params.annualInterestRate}
+            value={params.annualInterestRate || ''}
             onChange={handleChange}
             step="0.1"
             className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all outline-none font-mono text-lg"
@@ -107,7 +109,7 @@ const InputForm: React.FC<InputFormProps> = ({ params, onChange }) => {
           <input
             type="number"
             name="years"
-            value={params.years}
+            value={params.years || ''}
             onChange={handleChange}
             className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all outline-none font-mono text-lg"
             placeholder="10"
