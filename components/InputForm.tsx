@@ -1,6 +1,6 @@
 import React from 'react';
 import { InvestmentParams } from '../types';
-import { Settings, DollarSign, Calendar, TrendingUp, PiggyBank } from 'lucide-react';
+import { Settings, DollarSign, Calendar, TrendingUp, PiggyBank, ReceiptEuro, ArrowDownUp } from 'lucide-react';
 
 interface InputFormProps {
   params: InvestmentParams;
@@ -9,11 +9,11 @@ interface InputFormProps {
 
 const InputForm: React.FC<InputFormProps> = ({ params, onChange }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    // Se il valore è vuoto, salviamo 0 nello stato, ma l'input visivamente rimarrà vuoto grazie al value check
+    const { name, value, type, checked } = e.target;
+    
     onChange({
       ...params,
-      [name]: value === '' ? 0 : parseFloat(value),
+      [name]: type === 'checkbox' ? checked : (value === '' ? 0 : parseFloat(value)),
     });
   };
 
@@ -34,7 +34,6 @@ const InputForm: React.FC<InputFormProps> = ({ params, onChange }) => {
           <input
             type="number"
             name="initialCapital"
-            // Se è 0, mostriamo stringa vuota per permettere l'editing/cancellazione
             value={params.initialCapital || ''}
             onChange={handleChange}
             className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all outline-none font-mono text-lg"
@@ -94,6 +93,63 @@ const InputForm: React.FC<InputFormProps> = ({ params, onChange }) => {
             className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all outline-none font-mono text-lg"
             placeholder="10"
           />
+        </div>
+
+        <div className="h-px bg-slate-100 my-6"></div>
+
+        {/* Real Factors Header */}
+        <div className="flex items-center gap-2 mb-4 text-slate-800">
+          <ArrowDownUp size={18} />
+          <h3 className="text-md font-bold">Fattori Economici</h3>
+        </div>
+
+        {/* Inflation */}
+        <div className="group">
+          <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
+            <span>Inflazione Stimata (%)</span>
+          </label>
+          <input
+            type="number"
+            name="inflationRate"
+            value={params.inflationRate || ''}
+            onChange={handleChange}
+            step="0.1"
+            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all outline-none font-mono text-lg"
+            placeholder="0"
+          />
+          <p className="text-xs text-slate-400 mt-1">Riduce il potere d'acquisto reale.</p>
+        </div>
+
+        {/* Tax Section */}
+        <div className="group bg-slate-50 p-4 rounded-xl border border-slate-200">
+          <div className="flex items-center justify-between">
+            <label className="text-sm font-medium text-slate-700 flex items-center gap-2 cursor-pointer">
+              <ReceiptEuro size={16} className="text-slate-500" />
+              Applica Tassazione
+            </label>
+            <input
+              type="checkbox"
+              name="applyTax"
+              checked={params.applyTax}
+              onChange={handleChange}
+              className="w-5 h-5 text-brand-600 rounded focus:ring-brand-500 border-gray-300"
+            />
+          </div>
+          
+          {params.applyTax && (
+            <div className="mt-4 pt-3 border-t border-slate-200 animate-in fade-in slide-in-from-top-1 duration-200">
+              <label className="block text-xs font-semibold text-slate-500 mb-1">Aliquota Fiscale (%)</label>
+              <input
+                type="number"
+                name="taxRate"
+                value={params.taxRate || ''}
+                onChange={handleChange}
+                step="0.1"
+                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-brand-500 outline-none font-mono"
+                placeholder="26"
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>

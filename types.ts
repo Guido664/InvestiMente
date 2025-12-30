@@ -3,6 +3,9 @@ export interface InvestmentParams {
   annualInterestRate: number;
   years: number;
   initialCapital: number;
+  inflationRate: number;
+  applyTax: boolean;
+  taxRate: number;
 }
 
 export interface YearlyData {
@@ -17,6 +20,10 @@ export interface SimulationResult {
   finalBalance: number;
   totalInvested: number;
   totalInterest: number;
+  netBalance: number;
+  taxAmount: number;
+  purchasingPower: number;
+  fireMonthlyIncome: number;
 }
 
 export enum CalculationStatus {

@@ -1,23 +1,29 @@
 import React, { useState, useMemo } from 'react';
 import InputForm from './components/InputForm';
-import ResultsChart from './components/ResultsChart';
 import SummaryCards from './components/SummaryCards';
 import { InvestmentParams } from './types';
-import { calculateCompoundInterest } from './utils/calculations';
-import { TrendingUp } from 'lucide-react';
+import { calculateCompoundInterest, generatePDF } from './utils/calculations';
+import { TrendingUp, Download } from 'lucide-react';
 
 const App: React.FC = () => {
   const [params, setParams] = useState<InvestmentParams>({
     monthlyContribution: 100,
     annualInterestRate: 7, // Average stock market return
     years: 10,
-    initialCapital: 0
+    initialCapital: 0,
+    inflationRate: 0,
+    applyTax: false,
+    taxRate: 26
   });
 
   // Calculate results whenever params change
   const result = useMemo(() => {
     return calculateCompoundInterest(params);
   }, [params]);
+
+  const handleExportPDF = () => {
+    generatePDF(params, result);
+  };
 
   return (
     <div className="min-h-screen bg-slate-50 p-4 md:p-8 font-sans text-slate-900">
@@ -34,6 +40,14 @@ const App: React.FC = () => {
               <p className="text-slate-500 text-sm">Pianifica il tuo futuro finanziario</p>
             </div>
           </div>
+          
+          <button 
+            onClick={handleExportPDF}
+            className="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 text-slate-700 rounded-xl hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm font-medium text-sm group"
+          >
+            <Download size={18} className="text-slate-400 group-hover:text-brand-600 transition-colors" />
+            Esporta Report PDF
+          </button>
         </header>
 
         <main className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -44,8 +58,7 @@ const App: React.FC = () => {
 
           {/* Right Column: Visualization */}
           <div className="lg:col-span-8 flex flex-col gap-6">
-            <SummaryCards result={result} />
-            <ResultsChart result={result} />
+            <SummaryCards result={result} params={params} />
           </div>
         </main>
 
