@@ -56,16 +56,6 @@ const InputForm: React.FC<InputFormProps> = ({ params, onChange }) => {
             className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all outline-none font-mono text-lg"
             placeholder="100"
           />
-          <input
-            type="range"
-            name="monthlyContribution"
-            min="0"
-            max="5000"
-            step="50"
-            value={params.monthlyContribution}
-            onChange={handleChange}
-            className="w-full mt-2 h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-brand-600"
-          />
         </div>
 
         {/* Interest Rate */}
@@ -88,16 +78,6 @@ const InputForm: React.FC<InputFormProps> = ({ params, onChange }) => {
             <span>Bilanciato (7%)</span>
             <span>Aggressivo (12%)</span>
           </div>
-          <input
-            type="range"
-            name="annualInterestRate"
-            min="0"
-            max="20"
-            step="0.5"
-            value={params.annualInterestRate}
-            onChange={handleChange}
-            className="w-full mt-2 h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-brand-600"
-          />
         </div>
 
         {/* Years */}
@@ -113,16 +93,6 @@ const InputForm: React.FC<InputFormProps> = ({ params, onChange }) => {
             onChange={handleChange}
             className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all outline-none font-mono text-lg"
             placeholder="10"
-          />
-          <input
-            type="range"
-            name="years"
-            min="1"
-            max="50"
-            step="1"
-            value={params.years}
-            onChange={handleChange}
-            className="w-full mt-2 h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-brand-600"
           />
         </div>
       </div>
