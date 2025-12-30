@@ -1,16 +1,30 @@
 import { GoogleGenAI } from "@google/genai";
 import { InvestmentParams, SimulationResult } from "../types";
 
-// Initialize the client. 
-// Note: process.env.API_KEY is assumed to be available in the environment.
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+// Helper function to safely get the API Key without crashing in browser environments
+// where 'process' might not be defined.
+const getApiKey = (): string => {
+  try {
+    if (typeof process !== 'undefined' && process.env) {
+      return process.env.API_KEY || '';
+    }
+    return '';
+  } catch (e) {
+    return '';
+  }
+};
+
+const apiKey = getApiKey();
+const ai = new GoogleGenAI({ apiKey });
+
+export const hasApiKey = (): boolean => !!apiKey;
 
 export const getFinancialAdvice = async (
   params: InvestmentParams, 
   result: SimulationResult
 ): Promise<string> => {
-  if (!process.env.API_KEY) {
-    return "API Key mancante. Configura la chiave API per ricevere i consigli dell'AI.";
+  if (!hasApiKey()) {
+    return "API Key mancante. Per attivare l'intelligenza artificiale, configura la variabile d'ambiente API_KEY nelle impostazioni del tuo progetto su Vercel.";
   }
 
   try {
@@ -39,13 +53,13 @@ export const getFinancialAdvice = async (
       model: 'gemini-3-flash-preview',
       contents: prompt,
       config: {
-        thinkingConfig: { thinkingBudget: 0 } // Speed over deep thought for this simple task
+        thinkingConfig: { thinkingBudget: 0 }
       }
     });
 
     return response.text || "Non sono riuscito a generare un consiglio al momento.";
   } catch (error) {
     console.error("Errore durante la generazione del consiglio AI:", error);
-    return "Si è verificato un errore durante la comunicazione con l'assistente AI.";
+    return "Si è verificato un errore durante la comunicazione con l'assistente AI. Verifica la tua quota o la validità della chiave.";
   }
 };
