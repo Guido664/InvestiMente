@@ -1,6 +1,6 @@
 import React from 'react';
 import { InvestmentParams } from '../types';
-import { Settings, DollarSign, Calendar, TrendingUp, PiggyBank, ReceiptEuro, ArrowDownUp } from 'lucide-react';
+import { Settings, DollarSign, Calendar, TrendingUp, PiggyBank, Percent, ArrowDownUp } from 'lucide-react';
 
 interface InputFormProps {
   params: InvestmentParams;
@@ -124,7 +124,7 @@ const InputForm: React.FC<InputFormProps> = ({ params, onChange }) => {
         <div className="group bg-slate-50 p-4 rounded-xl border border-slate-200">
           <div className="flex items-center justify-between">
             <label className="text-sm font-medium text-slate-700 flex items-center gap-2 cursor-pointer">
-              <ReceiptEuro size={16} className="text-slate-500" />
+              <Percent size={16} className="text-slate-500" />
               Applica Tassazione
             </label>
             <input
