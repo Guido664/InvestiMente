@@ -14,20 +14,27 @@ const getApiKey = (): string => {
   }
 };
 
-const apiKey = getApiKey();
-const ai = new GoogleGenAI({ apiKey });
+// DO NOT initialize the client globally.
+// Initializing 'new GoogleGenAI({ apiKey: "" })' at module level can cause the app
+// to crash on startup (White Screen) if the validation fails or if env is missing.
+// const ai = new GoogleGenAI({ apiKey }); 
 
-export const hasApiKey = (): boolean => !!apiKey;
+export const hasApiKey = (): boolean => !!getApiKey();
 
 export const getFinancialAdvice = async (
   params: InvestmentParams, 
   result: SimulationResult
 ): Promise<string> => {
-  if (!hasApiKey()) {
+  const apiKey = getApiKey();
+
+  if (!apiKey) {
     return "API Key mancante. Per attivare l'intelligenza artificiale, configura la variabile d'ambiente API_KEY nelle impostazioni del tuo progetto su Vercel.";
   }
 
   try {
+    // Initialize the client strictly when needed using the safe key
+    const ai = new GoogleGenAI({ apiKey });
+
     const prompt = `
       Agisci come un consulente finanziario esperto. Analizza il seguente piano di accumulo capitale:
       
