@@ -8,6 +8,11 @@ interface SummaryCardsProps {
 }
 
 const SummaryCards: React.FC<SummaryCardsProps> = ({ result }) => {
+  // Calcolo della percentuale di incremento (ROI)
+  const roiPercentage = result.totalInvested > 0 
+    ? (result.totalInterest / result.totalInvested) * 100 
+    : 0;
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
       <div className="bg-gradient-to-br from-brand-600 to-brand-700 p-6 rounded-2xl text-white shadow-lg shadow-brand-200">
@@ -18,8 +23,13 @@ const SummaryCards: React.FC<SummaryCardsProps> = ({ result }) => {
         <div className="text-3xl font-bold tracking-tight">
           {formatCurrency(result.finalBalance)}
         </div>
-        <div className="text-brand-100 text-xs mt-1">
-           Totale accumulato
+        <div className="flex items-center gap-2 mt-1">
+          <span className="text-brand-100 text-xs">Totale accumulato</span>
+          {roiPercentage > 0 && (
+            <span className="bg-white/20 text-white px-2 py-0.5 rounded text-xs font-bold backdrop-blur-sm">
+              +{roiPercentage.toFixed(1)}%
+            </span>
+          )}
         </div>
       </div>
 
