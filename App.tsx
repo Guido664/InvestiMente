@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import InputForm from './components/InputForm';
 import ResultsChart from './components/ResultsChart';
 import SummaryCards from './components/SummaryCards';
-import AIAdvisor from './components/AIAdvisor';
 import { InvestmentParams } from './types';
 import { calculateCompoundInterest } from './utils/calculations';
 import { TrendingUp } from 'lucide-react';
@@ -43,11 +42,10 @@ const App: React.FC = () => {
             <InputForm params={params} onChange={setParams} />
           </div>
 
-          {/* Right Column: Visualization & AI */}
+          {/* Right Column: Visualization */}
           <div className="lg:col-span-8 flex flex-col gap-6">
             <SummaryCards result={result} />
             <ResultsChart result={result} />
-            <AIAdvisor params={params} result={result} />
           </div>
         </main>
 
